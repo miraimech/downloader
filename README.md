@@ -12,3 +12,8 @@ urls = [
 4. Run in terminal: json_fix % python3 main.py
    
 .JSON files are now properly formatted!
+
+#TODO
+1. test this on other API, make sure its universal
+2. use in quickplay
+3. get rid of the urls, so this is universally true, not speciic for my project
