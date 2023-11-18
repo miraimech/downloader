@@ -2,6 +2,7 @@ import json
 import re
 import requests
 import logging
+import os
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -17,24 +18,28 @@ def fix_json_content(json_text):
 def download_and_fix_json(urls):
     for url, filename in urls:
         try:
-            # Download the JSON data
             response = requests.get(url)
-            response.raise_for_status()  # Raise an HTTPError for unsuccessful status codes
+            response.raise_for_status()
 
             if not response.text.strip():
-                # Log a message if the response is empty (indicating site maintenance or data unavailability)
                 logging.warning("Site Maintenance -- data temporarily unavailable.")
                 continue
 
-            # Attempt to fix the JSON content
             fixed_json_text = fix_json_content(response.text)
+            new_data = json.loads(fixed_json_text)
 
-            # Parse the fixed content to ensure it is valid JSON
-            fixed_json_data = json.loads(fixed_json_text)
+            if os.path.exists(filename):
+                with open(filename, 'r') as existing_file:
+                    existing_data = json.load(existing_file)
 
-            # Save the fixed JSON content to a file
+                if new_data == existing_data:
+                    logging.info(f"No new Marketshare {filename.split('_')[-1].split('.')[0].capitalize()} data found at this time.")
+                    continue
+                else:
+                    logging.debug(f"Data difference detected for {filename}")
+
             with open(filename, 'w') as outfile:
-                json.dump(fixed_json_data, outfile, indent=4)
+                json.dump(new_data, outfile, indent=4)
             logging.info(f"Saved fixed JSON to '{filename}'")
         except requests.HTTPError as http_err:
             logging.error(f"HTTP error occurred while downloading '{filename}': {http_err}")
