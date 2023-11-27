@@ -59,8 +59,22 @@ def download_and_fix_json(urls):
 
 # URLs and file names
 urls = [
-    ("https://markets.newyorkfed.org/api/fxs/all/latest.json", "FX_Swaps_Announcements_Data.json"),
-    ("https://markets.newyorkfed.org/api/ambs/all/results/summary/latest.json", "FX_Swaps_Results_Data.json"),
+    ("https://www.federalregister.gov/api/v1/public-inspection-documents/current.json", "Public_Inspection_Data.txt"),
+    ("https://markets.newyorkfed.org/api/ambs/all/announcements/summary/latest.json", "AMBS_Announcements_Data.txt"),
+    ("https://markets.newyorkfed.org/api/ambs/all/results/summary/latest.json", "AMBS_Results_Data.txt"),
+    ("https://markets.newyorkfed.org/api/fxs/all/latest.json", "FX_Swaps_Announcements_Data.txt"),
+    ("https://markets.newyorkfed.org/api/ambs/all/results/summary/latest.json", "FX_Swaps_Results_Data.txt"),
+    ("https://markets.newyorkfed.org/api/marketshare/qtrly/latest.json", "Market_Share_Quarterly_Data.txt"),
+    ("https://markets.newyorkfed.org/api/marketshare/ytd/latest.json", "Market_Share_Yearly_Data.txt"),
+    ("https://markets.newyorkfed.org/api/rates/all/latest.json", "Rates_Data.txt"),
+    ("https://markets.newyorkfed.org/api/rp/all/all/results/latest.json", "Repo_Results_Data.txt"),
+    ("https://markets.newyorkfed.org/api/rp/all/all/announcements/latest.json", "Repo_Announcemens_Data.txt"),
+    ("https://markets.newyorkfed.org/api/seclending/all/results/summary/latest.json", "Securities_Lending_Data.txt"),
+    ("https://markets.newyorkfed.org/api/soma/asofdates/latest.json", "SOMA_Data.txt"),
+    ("https://markets.newyorkfed.org/api/tsy/all/announcements/summary/latest.json", "Treasury_Securities_Announcements_Data.txt"),
+    ("https://markets.newyorkfed.org/api/tsy/all/results/summary/latest.json", "Treasury_Securities_Results_Data.txt"),
+    ("https://markets.newyorkfed.org/api/tsy/all/operations/summary/latest.json", "Treasury_Securities_Operations_Data.txt"),
+    
 ]
 
 # Run the function to download and fix JSON files
