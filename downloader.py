@@ -15,6 +15,13 @@ def fix_json_content(json_text):
     fixed_json_text = fixed_json_text.replace("'", '"')
     return fixed_json_text
 
+def is_empty_field(data):
+    if isinstance(data, dict):
+        return all(is_empty_field(value) for value in data.values())
+    elif isinstance(data, list):
+        return len(data) == 0
+    return False  # Non-container fields are not considered empty
+
 def download_and_fix_json(urls):
     for url, filename in urls:
         try:
@@ -28,12 +35,16 @@ def download_and_fix_json(urls):
             fixed_json_text = fix_json_content(response.text)
             new_data = json.loads(fixed_json_text)
 
+            if is_empty_field(new_data):
+                logging.warning("Not enough data!")
+                continue
+
             if os.path.exists(filename):
                 with open(filename, 'r') as existing_file:
                     existing_data = json.load(existing_file)
 
                 if new_data == existing_data:
-                    logging.info(f"No new Marketshare {filename.split('_')[-1].split('.')[0].capitalize()} data found at this time.")
+                    logging.info(f"No new data found for '{filename}'.")
                     continue
                 else:
                     logging.debug(f"Data difference detected for {filename}")
@@ -48,8 +59,8 @@ def download_and_fix_json(urls):
 
 # URLs and file names
 urls = [
-    ("https://markets.newyorkfed.org/api/marketshare/qtrly/latest.json", "marketshare_quarterly.json"),
-    ("https://markets.newyorkfed.org/api/marketshare/ytd/latest.json", "marketshare_yearly.json")
+    ("https://markets.newyorkfed.org/api/fxs/all/latest.json", "FX_Swaps_Announcements_Data.json"),
+    ("https://markets.newyorkfed.org/api/ambs/all/results/summary/latest.json", "FX_Swaps_Results_Data.json"),
 ]
 
 # Run the function to download and fix JSON files
